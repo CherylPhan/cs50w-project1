@@ -17,7 +17,7 @@
         {% for book in books %}
             <li>{{ book.title }} by {{ book.author }} - {{ book.isbn }}</li>
         {% else %}
-            <p>There is no such book.</p>
+            <p>No book found.</p>
         {% endfor %}
     </ul>
 {% endblock %}
