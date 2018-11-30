@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- META TAGS -->
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        
+        <!-- CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+
+        <title>ReadingPals | {% block title %}{% end block %}</title>
+    </head>
+
+    <body>
+        <div class="container-fluid">
+            <!-- NAVBAR -->
+            <div class="navbar navbar-dark">
+                <span class="navbar-brand">ReadingPals</span>
+                <ul class="nav justify-content-end">
+                    <li class="nav-item">
+                        {% block nav-link %}{% end block %} 
+                    </li>
+                </ul>
+            </div>
+
+            <!-- HEADING -->
+            <h1>{% block heading %}{% end block %}</h1>
+
+            <!-- BODY -->
+            {% block body %}
+            {% end block %} 
+        </div>
+    </body>
+</html>
