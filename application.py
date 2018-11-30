@@ -28,3 +28,7 @@ def index():
 @app.route("/register")
 def register():
     return render_template("register.html")
+
+@app.route("/search")
+def search():
+    return render_template("search.html")
