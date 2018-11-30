@@ -1,16 +1,16 @@
-{% extends layout.html %}
+{% extends "layout.html" %}
 
 {% block title %}
     Register
-{% end block %}
+{% endblock %}
 
 {% block heading %}
     Register
-{% end block %}
+{% endblock %}
 
-{% block nav-link %}
+{% block nav_link %}
     <a class="nav-link" href="{{ url_for('index') }}">Log in</a>
-{% end block %}
+{% endblock %}
 
 {% block body %}
     <form>
@@ -32,4 +32,4 @@
         </div>
         <button type="submit" class="btn">Register</button>
     </form>
-{% end block %}
+{% endblock %}
