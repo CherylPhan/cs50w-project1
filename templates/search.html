@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Search for book
+{% endblock %}
+
+{% block heading %}
+    Search for book
+{% endblock %}
+
+{% block nav_link %}
+    <a class="nav-link" href="#">Log out</a>
+{% endblock %}
+
+{% block body %}
+    <form>
+        <input class="form-control" type="text" name="search">
+        <button type="submit" class="btn">Search</button>
+    </form>
+{% endblock %}
