@@ -46,8 +46,8 @@
         {% for review in reviews %}
             <li>
                 <span>{{ review.user }}</span>
-                {% for i in range {{review.rating}} %}
-                    <img> <!-- star image -->
+                {% for i in range(5) %} <!-- TODO -->
+                    <img>
                 {% endfor %}
                 <p>review.comment</p>
             </li>
@@ -90,7 +90,7 @@
                 <p>Comment:</p>
             </div>
             <div class="col-sm-8">
-                <textarea class="form-control"></textarea>
+                <textarea class="form-control" name="comment"></textarea>
             </div>
         </div>
         <button class="btn" type="submit">Post</button>

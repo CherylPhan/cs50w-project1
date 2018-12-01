@@ -79,6 +79,37 @@ def register():
     if request.method == "GET":
         return render_template("register.html")
 
-@app.route("/search")
+@app.route("/search", methods=["GET", "POST"])
 def search():
-    return render_template("search.html")
+
+    # User reach route using "POST" method
+    if request.method == "POST":
+        # Get the search key
+        key = request.form.get("key")
+
+        # Look it up in the databse
+        books = db.execute("SELECT * FROM books WHERE title LIKE :key OR author LIKE :key OR isbn LIKE :key", 
+                            {"key": '%' + key + '%'}).fetchall()
+        
+        # Make sure the book exists
+        if books is None:
+            return render_template("error.html", message="No book found.")
+        
+        # Get all the matching books
+        return render_template("books.html", books=books)
+
+    # User reach route using "GET" method
+    if request.method == "GET":
+        return render_template("search.html")
+
+@app.route("/books/<int:book_id>")
+def book(book_id):
+
+    # Make sure the book exists
+    book =  db.execute("SELECT * FROM books WHERE id=:id", {"id": book_id}).fetchone()
+    if book is None:
+        return render_template("error.html", message="No such book.")
+    
+    # TODO Get Goodreads rating (if any)
+
+    return render_template("book.html", book=book)

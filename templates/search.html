@@ -13,8 +13,8 @@
 {% endblock %}
 
 {% block body %}
-    <form>
-        <input class="form-control" type="text" name="search">
+    <form action="{{ url_for('search') }}" method="post">
+        <input class="form-control" type="text" name="key">
         <button type="submit" class="btn">Search</button>
     </form>
 {% endblock %}
