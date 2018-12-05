@@ -8,8 +8,10 @@
     Register
 {% endblock %}
 
-{% block nav_link %}
-    <a class="nav-link" href="{{ url_for('index') }}">Log in</a>
+{% block nav_links %}
+    <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('index') }}">Log in</a>
+    </li>
 {% endblock %}
 
 {% block body %}

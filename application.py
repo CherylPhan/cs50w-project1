@@ -40,6 +40,10 @@ def index():
 
     # User reach route using "POST" method
     if request.method == "POST":
+
+        # Forget current user:
+        session.pop('user_id', None)
+
         # Get username and password
         username = request.form.get("username")
         password = request.form.get("password")
@@ -166,6 +170,11 @@ def book(book_id):
         # Get rating and comment
         rating = request.form.get("rating")
         comment = request.form.get("comment")
+
+        # Ensure user has picked a rating
+        if rating is None:
+            flash("Please rate this book.")
+            return redirect(url_for('book', book_id=book_id))
 
         # Insert review into database
         db.execute("INSERT INTO reviews (user_id, book_id, rating, comment) VALUES (:user_id, :book_id, :rating, :comment)",
