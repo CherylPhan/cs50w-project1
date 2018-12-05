@@ -13,15 +13,25 @@
 {% endblock %}
 
 {% block body %}
-    <form action="{{ url_for('index') }}" method="post">
-        <div class="form-group">
-            <label for="username">Username</label>
-            <input id="username" type="text" class="form-control" name="username" required>
-        </div>
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input id="password" type="password" class="form-control" name="password" required>
-        </div>
-        <button type="submit" class="btn">Log in</button>
-    </form>
+    <div class="login-res-form">
+        <!-- Login failed message -->
+        {% with error = get_flashed_messages() %}
+            {% if error %}
+                <div class="alert alert-danger">{{ error[0] }}</div>
+            {% endif %}
+        {% endwith %}
+        <form action="{{ url_for('index') }}" method="post">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input id="username" type="text" class="form-control" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input id="password" type="password" class="form-control" name="password" required>
+            </div>
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-dark">Log in</button>
+            </div>
+        </form>
+    </div>
 {% endblock %}

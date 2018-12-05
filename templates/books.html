@@ -5,19 +5,42 @@
 {% endblock %}
 
 {% block heading %}
-    Search results
+    Search for book
 {% endblock %}
 
 {% block nav_link %}
-    <a class="nav-link" href="#">Log out</a>
+    <a class="nav-link" href="{{ url_for('logout') }}">Log out</a>
 {% endblock %}
 
 {% block body %}
-    <ul>
-        {% for book in books %}
-            <li>
-                <a href="{{ url_for('book', book_id=book.id) }}">{{ book.title }} by {{ book.author }} - {{ book.isbn }}</a>
-            </li>
-        {% endfor %}
-    </ul>
+    <div class="book-pages">
+        {% with error = get_flashed_messages() %}
+            {% if error %}
+                <div class="alert alert-danger">{{ error[0] }}</div>
+            {% endif %}
+        {% endwith %}
+    
+        <form action="{{ url_for('books') }}" method="post">
+            <div class="form-group">
+                <input class="form-control" type="text" name="key" placeholder="Enter book title, author or isbn">
+            </div>
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-dark">Search</button>
+            </div>
+        </form>
+
+        <div class="mt-4">
+            {% if books %}
+                <ul>
+                    {% for book in books %}
+                        <li>
+                            <a href="{{ url_for('book', book_id=book.id) }}">{{ book.title }} by {{ book.author }} - {{ book.isbn }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% elif message %}
+                <p class="text-center">{{ message }}</p>
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}

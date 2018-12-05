@@ -5,94 +5,85 @@
 {% endblock %}
 
 {% block heading %}
-    Book details
+    {{ book.title }}
 {% endblock %}
 
 {% block nav_link %}
-    <a class="nav-link" href="#">Log out</a>
+    <a class="nav-link" href="{{ url_for('logout') }}">Log out</a>
 {% endblock %}
 
 {% block body %}
-    <!-- DETAILS -->
-    <table>
-        <tr>
-            <th>Title:</th>
-            <td>{{ book.title }}</td>
-        </tr>
-        <tr>
-            <th>Author:</th>
-            <td>{{ book.author }}</td>
-        </tr>
-        <tr>
-            <th>Publication year:</th>
-            <td>{{ book.year }}</td>
-        </tr>
-        <tr>
-            <th>ISBN number:</th>
-            <td>{{ book.isbn }}</td>
-        </tr>
-        <tr>
-            <th>Average rating on Goodreads:</th>
-            <td>{{ book.average_rating }}</td>
-        </tr>
-        <tr>
-            <th>Number of ratings on Goodreads:</th>
-            <td>{{ book.work_ratings_count }}</td>
-        </tr>
-    </table>
-    <!-- REVIEWS -->
-    <h3>Reviews</h3>
-    <ul>
-        {% for review in reviews %}
-            <li>
-                <span>{{ review.user }}</span>
-                {% for i in range(5) %} <!-- TODO -->
-                    <img>
-                {% endfor %}
-                <p>review.comment</p>
-            </li>
-        {% else %}
-            <p>No review yet.</p>
-        {% endfor %}
-    </ul>
-    <!-- SUBMIT REVIEW -->
-    <h4>Post a review</h4>
-    <form class="form-group">
-        <div class="form-row">
-            <div class="col-sm-4">
-                <p>Rating:</p>
-            </div>
-            <div class="col-sm-8">
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="rating" value="1" id="1">
-                    <label class="form-check-label" for="1">1</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="rating" value="2" id="2">
-                    <label class="form-check-label" for="2">2</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="rating" value="3" id="3">
-                    <label class="form-check-label" for="3">3</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="rating" value="4" id="4">
-                    <label class="form-check-label" for="4">4</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="rating" value="5" id="5">
-                    <label class="form-check-label" for="5">5</label>
-                </div>
-            </div>
-        </div><!-- form-row -->
-        <div class="form-row">
-            <div class="col-sm-4">
-                <p>Comment:</p>
-            </div>
-            <div class="col-sm-8">
-                <textarea class="form-control" name="comment"></textarea>
-            </div>
+    <div class="book-pages">
+        <!-- DETAILS -->
+        <div>
+            <p class="jumbotron"><strong>{{ book.title }}</strong> was written by <strong>{{ book.author }}</strong> and published in <strong>{{ book.year }}</strong>. 
+                The book has an average rating of <strong>{{ gr.average_rating }}</strong> from <strong>{{ gr.work_ratings_count }}</strong>
+                ratings on <cite>Goodreads</cite>. <small>ISBN: {{ book.isbn }}</small></p>
         </div>
-        <button class="btn" type="submit">Post</button>
-    </form>
+        <!-- REVIEWS -->
+        <h4>Reviews</h3>
+        <ul>
+            {% for review in reviews %}
+                <li>
+                    <div class="rating-line">
+                        <span class="mr-2"><strong>{{ review.username }}</strong> rated it</span>
+                        {% for i in range(review.rating) %} 
+                            <img class="mr-1" src="https://png.pngtree.com/svg/20170626/star_rating_425874.png" height="12px">
+                        {% endfor %}
+                    </div>
+                    <p>{{ review.comment }}</p>
+                </li>
+            {% else %}
+                <p>No review yet.</p>
+            {% endfor %}
+        </ul>
+        <!-- SUBMIT REVIEW -->
+        <h5>Post a review</h5>
+        <!-- Failed message -->
+        {% with error = get_flashed_messages() %}
+            {% if error %}
+                <div class="alert alert-danger">{{ error[0] }}</div>
+            {% endif %}
+        {% endwith %}
+        <form class="form-group" action="{{ url_for('book', book_id = book.id) }}" method="post">
+            <div class="form-row">
+                <div class="col-sm-3 mb-3">
+                    <span>Rating:</span>
+                </div>
+                <div class="col-sm-9 mb-3">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="rating" value="1" id="1">
+                        <label class="form-check-label" for="1">1</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="rating" value="2" id="2">
+                        <label class="form-check-label" for="2">2</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="rating" value="3" id="3">
+                        <label class="form-check-label" for="3">3</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="rating" value="4" id="4">
+                        <label class="form-check-label" for="4">4</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="rating" value="5" id="5">
+                        <label class="form-check-label" for="5">5</label>
+                    </div>
+                </div>
+            </div><!-- form-row -->
+            <div class="form-row">
+                <div class="col-sm-3 mb-3">
+                    <span>Comment:</span>
+                </div>
+                <div class="col-sm-9 mb-3">
+                    <textarea class="form-control" name="comment"></textarea>
+                </div>
+            </div>
+            <div class="text-center">
+                <button class="btn btn-dark" type="submit">Post</button>
+            </div>
+        </form>
+    </div>
 {% endblock %}
