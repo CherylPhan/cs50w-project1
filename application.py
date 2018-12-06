@@ -1,6 +1,6 @@
-import os, requests
+import os, requests, json
 
-from flask import Flask, session, render_template, request, redirect, url_for, flash
+from flask import Flask, session, render_template, request, redirect, url_for, flash, jsonify
 from flask_session import Session
 from functools import wraps
 from sqlalchemy import create_engine
@@ -191,3 +191,40 @@ def logout():
     session.pop('user_id', None)
 
     return redirect(url_for('index'))
+
+@app.route("/api/<isbn>", methods=["GET"])
+@login_required
+def api(isbn):
+
+    # Variable for book information
+    book = {}
+
+    # Get book information
+    row = db.execute("SELECT * FROM books WHERE isbn = :isbn",
+                    {"isbn": isbn}).fetchone()
+    
+    # Ensure the book exists
+    if row is None:
+        return "No book match that ISBN."
+
+    book["title"] = row.title
+    book["author"] = row.author
+    book["year"] = row.year
+    book["isbn"] = isbn
+
+    # Get average rating and number of reviews
+    review = db.execute("SELECT COUNT(*) AS count, SUM(rating) AS sum FROM reviews WHERE book_id = :book_id",
+                        {"book_id": row.id}).fetchone()
+
+    # If no review was posted for the book
+    if review.count == 0:
+        book["review_count"] = 0
+        book["average_score"] = 0
+    else:    
+        book["review_count"] = review.count
+        book["average_score"] = round(review.sum / review.count, 2)
+
+    # Create JSON response
+    response = jsonify(book)
+
+    return response
